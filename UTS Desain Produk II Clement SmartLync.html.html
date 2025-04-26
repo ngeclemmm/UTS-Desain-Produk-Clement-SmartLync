@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Healthy Journey</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom right, #ffffff, #e0f7fa, #fff9c4);
+      overflow-x: hidden;
+      color: #333;
+    }
+    .page {
+      display: none;
+      padding: 40px 20px;
+      min-height: 100vh;
+      box-sizing: border-box;
+      text-align: center;
+      animation: fadeIn 1s ease;
+    }
+    .page.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h1, h2 {
+      color: #007BFF;
+    }
+    .btn {
+      background-color: #007BFF;
+      color: white;
+      padding: 10px 20px;
+      margin: 20px 5px 0 5px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .btn:hover {
+      background-color: #0056b3;
+    }
+    .nutrition-item {
+      background: #ffe600;
+      margin: 10px auto;
+      padding: 15px;
+      width: 80%;
+      border-radius: 10px;
+      font-size: 18px;
+    }
+    .recipe-item {
+      background: #ffe600;
+      margin: 10px auto;
+      padding: 15px;
+      width: 80%;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    #recipeDetail {
+      margin-top: 20px;
+    }
+    .news-container {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: 20px;
+      padding: 20px;
+    }
+    .news-card {
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+      background: #ffffff;
+      border: 2px solid #007BFF;
+      border-radius: 15px;
+      padding: 20px;
+      width: 250px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .news-card h3 {
+      color: #007BFF;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Page 1: Welcome -->
+<div class="page active" id="page1">
+  <h1>Hello User 1! 😊</h1>
+  <p>Selamat datang di Healthy Journey!</p>
+  <button class="btn" onclick="nextPage()">Next</button>
+</div>
+
+<!-- Page 2: Nutrisi -->
+<div class="page" id="page2">
+  <h2>Kandungan Nutrisi</h2>
+  <div class="nutrition-item">Karbohidrat: 60%</div>
+  <div class="nutrition-item">Protein: 20%</div>
+  <div class="nutrition-item">Lemak Sehat: 15%</div>
+  <div class="nutrition-item">Vitamin & Mineral: 5%</div>
+  <button class="btn" onclick="prevPage()">Back</button>
+  <button class="btn" onclick="nextPage()">Next</button>
+</div>
+
+<!-- Page 3: Resep -->
+<div class="page" id="page3">
+  <h2>Resep Makanan</h2>
+  <div id="recipeList">
+    <div class="recipe-item" onclick="showRecipe('Salad Buah', 'Buah segar + yogurt. Potong buah, campur dengan yogurt.')">Salad Buah</div>
+    <div class="recipe-item" onclick="showRecipe('Smoothie Mangga', 'Mangga, madu, dan yogurt. Blender semua bahan.')">Smoothie Mangga</div>
+    <div class="recipe-item" onclick="showRecipe('Chicken Wrap', 'Ayam, sayuran, tortilla. Bungkus ayam dan sayur dengan tortilla.')">Chicken Wrap</div>
+  </div>
+  <div id="recipeDetail" style="display: none;">
+    <h3 id="recipeTitle"></h3>
+    <p id="recipeContent"></p>
+    <button class="btn" onclick="hideRecipe()">Kembali ke Resep</button>
+  </div>
+  <button class="btn" onclick="prevPage()">Back</button>
+  <button class="btn" onclick="nextPage()">Next</button>
+</div>
+
+<!-- Page 4: Berita -->
+<div class="page" id="page4">
+  <h2>Berita Seputar Makanan Sehat</h2>
+  <div class="news-container">
+    <!-- Akan diisi via JS -->
+  </div>
+  <button class="btn" onclick="prevPage()">Back</button>
+  <button class="btn" onclick="nextPage()">Next</button>
+</div>
+
+<!-- Page 5: Ending -->
+<div class="page" id="page5">
+  <h1>Stay Healthy and Stay Happy!</h1>
+  <p>Terima kasih sudah mengikuti perjalanan ini. Tetap semangat!</p>
+  <button class="btn" onclick="restart()">Kembali ke Awal</button>
+</div>
+
+<script>
+  let currentPage = 1;
+
+  function showPage(pageNumber) {
+    document.querySelectorAll('.page').forEach((page, index) => {
+      page.classList.remove('active');
+      if (index === pageNumber - 1) {
+        page.classList.add('active');
+      }
+    });
+  }
+
+  function nextPage() {
+    if (currentPage < 5) {
+      currentPage++;
+      showPage(currentPage);
+    }
+  }
+
+  function prevPage() {
+    if (currentPage > 1) {
+      currentPage--;
+      showPage(currentPage);
+    }
+  }
+
+  function restart() {
+    currentPage = 1;
+    showPage(currentPage);
+  }
+
+  function showRecipe(title, content) {
+    document.getElementById('recipeList').style.display = 'none';
+    document.getElementById('recipeDetail').style.display = 'block';
+    document.getElementById('recipeTitle').innerText = title;
+    document.getElementById('recipeContent').innerText = content;
+  }
+
+  function hideRecipe() {
+    document.getElementById('recipeList').style.display = 'block';
+    document.getElementById('recipeDetail').style.display = 'none';
+  }
+
+  // Generate berita dinamis
+  const beritaList = [
+    "Buah setiap hari meningkatkan energi.",
+    "Sayuran hijau memperkuat sistem imun.",
+    "Minum air putih minimal 8 gelas sehari.",
+    "Sarapan penting untuk konsentrasi.",
+    "Vitamin C bantu penyembuhan luka.",
+    "Makanan serat tinggi memperbaiki pencernaan.",
+    "Makan kacang-kacangan untuk jantung sehat.",
+    "Batasi gula untuk kesehatan optimal.",
+    "Omega-3 kurangi risiko penyakit jantung.",
+    "Teh hijau kaya antioksidan.",
+    "Pilih makanan organik bila memungkinkan.",
+    "Kurangi konsumsi makanan olahan.",
+    "Protein penting untuk pembentukan otot.",
+    "Makan malam ringan bantu tidur nyenyak.",
+    "Probiotik baik untuk kesehatan usus.",
+    "Cokelat hitam kaya antioksidan.",
+    "Jus buah alami lebih baik dari soda.",
+    "Kurangi garam cegah tekanan darah tinggi.",
+    "Makan teratur jaga metabolisme stabil.",
+    "Asupan vitamin D untuk kekuatan tulang."
+  ];
+
+  const newsContainer = document.querySelector('.news-container');
+  beritaList.forEach(berita => {
+    const newsCard = document.createElement('div');
+    newsCard.className = 'news-card';
+    newsCard.innerHTML = `<h3>${berita}</h3>`;
+    newsContainer.appendChild(newsCard);
+  });
+</script>
+
+</body>
+</html>
